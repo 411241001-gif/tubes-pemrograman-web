@@ -1591,7 +1591,7 @@ html {
     135deg,
     #f3f7f0,
     #dce8d4
-  ); /* Warna background diselaraskan */
+  ); 
   padding: 20px;
 }
 
@@ -1627,7 +1627,7 @@ html {
 
 .login-box input:focus {
   outline: none;
-  border-color: #7a8f63; /* Warna fokus diselaraskan */
+  border-color: #7a8f63; 
   box-shadow: 0 0 10px rgba(122, 143, 99, 0.1);
 }
 
@@ -1635,7 +1635,7 @@ html {
   padding: 15px;
   border: none;
   border-radius: 12px;
-  background: #7a8f63; /* Warna tombol utama diselaraskan */
+  background: #7a8f63; 
   color: white;
   font-size: 16px;
   font-weight: bold;
@@ -1644,7 +1644,7 @@ html {
 }
 
 .login-box button:hover {
-  background: #657750; /* Warna hover tombol diselaraskan */
+  background: #657750; 
   transform: translateY(-2px);
 }
 
@@ -1654,7 +1654,7 @@ html {
 }
 
 .login-box a {
-  color: #7a8f63; /* Warna link teks diselaraskan */
+  color: #7a8f63; 
   text-decoration: none;
   font-weight: bold;
 }
