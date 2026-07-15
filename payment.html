@@ -1,0 +1,308 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Payment | TanamanKu</title>
+
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css"
+    />
+
+    <link rel="stylesheet" href="CSS/style.css" />
+  </head>
+  <script>
+    if (!localStorage.getItem("user")) {
+      alert("Silakan login terlebih dahulu");
+      window.location.href = "login.html";
+    }
+  </script>
+  <body>
+    <nav class="navbar">
+      <div class="logo">
+        <a href="index.html">TanamanKu</a>
+      </div>
+
+      <ul class="nav-links">
+        <li><a href="index.html">Home</a></li>
+        <li><a href="shop.html">Shop</a></li>
+        <li><a href="about.html">About</a></li>
+      </ul>
+
+      <form class="nav-right" id="searchForm">
+        <input
+          type="text"
+          id="searchInput"
+          placeholder="Cari tanaman atau kategori..."
+        />
+        <button type="submit" hidden></button>
+
+        <a href="cart.html" class="cart-icon">
+          <i class="fa-solid fa-cart-shopping"></i>
+          <span id="cart-count">0</span>
+        </a>
+        <a href="profile.html" class="login-btn"> Profile </a>
+        <a href="login.html" class="login-btn" id="loginBtn"> Login </a>
+        <a href="myorders.html" class="login-btn"> My Orders </a>
+      </form>
+    </nav>
+
+    <section class="payment-section">
+      <div class="payment-left">
+        <h1>Payment Method</h1>
+
+        <div class="checkout-steps">
+          <span>Address</span>
+          <span>Shipping</span>
+          <span class="active-step"> Payment </span>
+        </div>
+
+        <div class="payment-options">
+          <div class="payment-card" data-method="bca">
+            <div class="payment-info">
+              <i class="fa-solid fa-building-columns"></i>
+              <div>
+                <h3>Bank BCA</h3>
+                <p>Transfer Bank</p>
+              </div>
+            </div>
+          </div>
+
+          <div class="payment-card" data-method="dana">
+            <div class="payment-info">
+              <i class="fa-solid fa-wallet"></i>
+              <div>
+                <h3>Dana</h3>
+                <p>E-Wallet Payment</p>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div
+          id="payment-input-container"
+          style="
+            display: none;
+            background: #fff;
+            padding: 20px;
+            border-radius: 8px;
+            margin-top: 20px;
+            border: 1px solid #ddd;
+          "
+        >
+          <h3
+            id="input-title"
+            style="
+              margin-top: 0;
+              margin-bottom: 15px;
+              font-size: 18px;
+              font-weight: bold;
+            "
+          >
+            Detail Pembayaran
+          </h3>
+
+          <div style="margin-bottom: 15px">
+            <p
+              id="input-label-1"
+              style="margin-bottom: 5px; font-size: 14px; color: #333"
+            >
+              Nomor:
+            </p>
+            <input
+              type="text"
+              id="custom-input-1"
+              placeholder=""
+              style="
+                width: 100%;
+                padding: 10px;
+                border: 1px solid #ccc;
+                border-radius: 5px;
+                box-sizing: border-box;
+              "
+            />
+          </div>
+
+          <div>
+            <p
+              id="input-label-2"
+              style="margin-bottom: 5px; font-size: 14px; color: #333"
+            >
+              Atas Nama:
+            </p>
+            <input
+              type="text"
+              id="custom-input-2"
+              placeholder="Nama Pemilik Akun"
+              style="
+                width: 100%;
+                padding: 10px;
+                border: 1px solid #ccc;
+                border-radius: 5px;
+                box-sizing: border-box;
+              "
+            />
+          </div>
+        </div>
+
+        <button
+          id="completeOrderBtn"
+          class="continue-btn"
+          style="margin-top: 20px"
+        >
+          Complete Payment
+        </button>
+        <a href="shipping.html" class="back-btn">Back to Shipping</a>
+      </div>
+
+      <div class="payment-right">
+        <div class="summary-box">
+          <h2>Your Cart</h2>
+          <div id="payment-cart-items"></div>
+
+          <div class="summary-line">
+            <span>Subtotal</span>
+            <span id="payment-subtotal"> Rp0 </span>
+          </div>
+
+          <div class="summary-line">
+            <span>Shipping</span>
+            <span id="payment-shipping-cost"> Rp10.000 </span>
+          </div>
+
+          <div
+            class="summary-line"
+            id="discount-row"
+            style="display: none; color: #e74c3c"
+          >
+            <span>Discount</span>
+            <span id="discount-amount">-Rp0</span>
+          </div>
+
+          <div class="summary-line total">
+            <span>Total</span>
+            <span id="payment-total"> Rp0 </span>
+          </div>
+        </div>
+      </div>
+    </section>
+    <div id="toast"></div>
+
+    <script src="JS/script.js"></script>
+
+    <script>
+      // === 1. LOGIKA UTK SINKRONISASI SHIPPING COST DARI SHIPPING PAGE ===
+      document.addEventListener("DOMContentLoaded", () => {
+        // Ambil data ongkir yang disimpan dari page shipping sebelumnya (misal key-nya 'shippingCost')
+        // Jika di file shipping.html lo memakai nama key lain, samakan nama 'shippingCost' ini ya!
+        const savedShipping = localStorage.getItem("shippingCost");
+
+        if (savedShipping) {
+          const shippingValue = parseInt(savedShipping);
+
+          // Update teks shipping di card kanan
+          const shippingElement = document.getElementById(
+            "payment-shipping-cost",
+          );
+          if (shippingElement) {
+            shippingElement.innerText =
+              "Rp" + shippingValue.toLocaleString("id-ID");
+          }
+
+          // Hitung ulang Grand Total berdasarkan Subtotal + Shipping Baru - Discount
+          const subtotalText =
+            document.getElementById("payment-subtotal").innerText;
+          const subtotal = parseInt(subtotalText.replace(/\D/g, "")) || 0;
+
+          const discountText =
+            document.getElementById("discount-amount").innerText;
+          const discount = parseInt(discountText.replace(/\D/g, "")) || 0;
+
+          const newTotal = subtotal + shippingValue - discount;
+
+          const totalElement = document.getElementById("payment-total");
+          if (totalElement) {
+            totalElement.innerText = "Rp" + newTotal.toLocaleString("id-ID");
+          }
+        }
+      });
+
+      // === 2. LOGIKA HANDLING DISPLAY TEXT BOX PEMBAYARAN ===
+      const cards = document.querySelectorAll(".payment-card");
+      const inputContainer = document.getElementById("payment-input-container");
+      const inputTitle = document.getElementById("input-title");
+      const inputLabel1 = document.getElementById("input-label-1");
+      const input1 = document.getElementById("custom-input-1");
+      const input2 = document.getElementById("custom-input-2");
+
+      cards.forEach((card) => {
+        card.addEventListener("click", () => {
+          cards.forEach((c) => c.classList.remove("active-payment"));
+          card.classList.add("active-payment");
+
+          inputContainer.style.display = "block";
+
+          const method = card.getAttribute("data-method");
+          if (method === "bca") {
+            inputTitle.innerText = "Transfer Bank BCA";
+            inputLabel1.innerText = "Masukkan nomor rekening tujuan:";
+            input1.placeholder = "Contoh: 1234567890";
+            input2.placeholder = "Nama Pemilik Rekening";
+          } else if (method === "dana") {
+            inputTitle.innerText = "Dana Payment";
+            inputLabel1.innerText = "Masukkan nomor Dana:";
+            input1.placeholder = "Contoh: 08xxxxxxxxxx";
+            input2.placeholder = "Nama Akun Dana";
+          }
+        });
+      });
+
+      // === 3. LOGIKA SUBMIT BACKEND ASLI LO (TIDAK BERUBAH) ===
+      const completeOrderBtn = document.getElementById("completeOrderBtn");
+
+      if (completeOrderBtn) {
+        completeOrderBtn.addEventListener("click", async () => {
+          const user = JSON.parse(localStorage.getItem("user"));
+
+          if (!user) {
+            alert("Silakan login");
+            return;
+          }
+
+          const totalText = document.getElementById("payment-total").innerText;
+          const total = parseInt(totalText.replace(/\D/g, ""));
+          const cart = JSON.parse(localStorage.getItem("cart")) || [];
+
+          try {
+            const response = await fetch("http://localhost:3000/create-order", {
+              method: "POST",
+              headers: {
+                "Content-Type": "application/json",
+              },
+              body: JSON.stringify({
+                user_id: user.id,
+                total: total,
+                items: cart,
+              }),
+            });
+
+            const data = await response.json();
+
+            if (data.success) {
+              localStorage.removeItem("cart");
+              // Bersihkan ongkir setelah order sukses
+              localStorage.removeItem("shippingCost");
+              window.location.href = "success.html";
+            } else {
+              alert("Order gagal dibuat");
+            }
+          } catch (error) {
+            console.log(error);
+            alert("Server error");
+          }
+        });
+      }
+    </script>
+  </body>
+</html>

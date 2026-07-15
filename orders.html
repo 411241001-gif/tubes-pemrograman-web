@@ -1,0 +1,75 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+    <title>My Orders</title>
+
+    <link rel="stylesheet" href="CSS/style.css" />
+  </head>
+
+  <body>
+    <h1>My Orders</h1>
+
+    <div id="ordersContainer"></div>
+
+    <script>
+      const user = JSON.parse(localStorage.getItem("user"));
+
+      if (!user) {
+        alert("Silakan login");
+
+        window.location.href = "login.html";
+      }
+
+      async function loadOrders() {
+        const response = await fetch(`http://localhost:3000/orders/${user.id}`);
+
+        const data = await response.json();
+
+        const container = document.getElementById("ordersContainer");
+
+        if (data.orders.length === 0) {
+          container.innerHTML = "<p>Belum ada pesanan</p>";
+
+          return;
+        }
+
+        data.orders.forEach((order) => {
+          container.innerHTML += `
+
+      <div
+      style="
+      border:1px solid #ddd;
+      padding:15px;
+      margin-bottom:15px;
+      border-radius:10px;
+      ">
+
+        <h3>Order #${order.id}</h3>
+
+        <p>
+          Total:
+          Rp${Number(order.total).toLocaleString("id-ID")}
+        </p>
+
+        <p>
+          Status:
+          <strong>${order.status}</strong>
+        </p>
+        
+        <p>
+          ${new Date(order.created_at).toLocaleString("id-ID")}
+        </p>
+
+      </div>
+
+    `;
+        });
+      }
+
+      loadOrders();
+    </script>
+  </body>
+</html>

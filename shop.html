@@ -1,0 +1,157 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+    <title>Shop - TanamanKu</title>
+
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css"
+    />
+    <link rel="stylesheet" href="CSS/style.css" />
+  </head>
+
+  <body>
+    <!-- NAVBAR -->
+    <nav class="navbar">
+      <div class="logo">
+        <a href="index.html">TanamanKu</a>
+      </div>
+
+      <ul class="nav-links">
+        <li><a href="index.html">Home</a></li>
+        <li><a href="shop.html">Shop</a></li>
+        <li><a href="about.html">About</a></li>
+      </ul>
+
+      <form class="nav-right" id="searchForm">
+        <input
+          type="text"
+          id="searchInput"
+          placeholder="Cari tanaman atau kategori..."
+        />
+
+        <a href="cart.html" class="cart-icon">
+          <i class="fa-solid fa-cart-shopping"></i>
+          <span id="cart-count">0</span>
+        </a>
+        <a href="profile.html" class="login-btn"> Profile </a>
+        <a href="login.html" class="login-btn" id="loginBtn"> Login </a>
+        <a href="myorders.html" class="login-btn"> My Orders </a>
+      </div>
+    </nav>
+    <!-- SHOP HEADER -->
+    <section class="shop-header">
+      <h1>TanamanKu</h1>
+
+      <p>
+        Temukan berbagai koleksi tanaman hias berkualitas untuk mempercantik
+        rumah, ruang kerja, dan taman impianmu. Mulai dari kaktus minimalis
+        hingga tanaman bunga segar.
+      </p>
+    </section>
+
+    <!-- SHOP CONTENT -->
+    <section class="shop-container">
+      <!-- FILTER -->
+      <div class="filter-section">
+        <h3>Filters</h3>
+
+        <label>
+          <input type="checkbox" value="kaktus" class="filter-checkbox" />
+          Tanaman Kaktus
+        </label>
+
+        <label>
+          <input type="checkbox" value="hias" class="filter-checkbox" />
+          Tanaman Hias Daun
+        </label>
+
+        <label>
+          <input type="checkbox" value="bunga" class="filter-checkbox" />
+          Tanaman Bunga
+        </label>
+      </div>
+
+      <!-- PRODUCT CONTENT -->
+      <div class="product-content">
+        <!-- TOP -->
+        <div class="product-top">
+
+
+          <select id="sortSelect">
+            <option value="default">Sort by</option>
+            <option value="low">Price: Low to High</option>
+            <option value="high">Price: High to Low</option>
+          </select>
+        </div>
+
+        <!-- PRODUCT GRID -->
+        <div class="product-grid" id="productGrid">
+          <!-- PRODUCT 1 -->
+          <div class="product-card" data-category="kaktus" data-price="80000">
+            <a href="cactusflower.html" class="product-link">
+              <img src="images/kaktus1.jpeg" alt="" />
+              <h4>Cactus Flower</h4>
+              <p>Rp80.000</p>
+            </a>
+          </div>
+
+          <!-- PRODUCT 2 -->
+          <div class="product-card" data-category="hias" data-price="75000">
+            <a href="crotonpetra.html" class="product-link">
+              <img src="images/hias1.jpeg" alt="" />
+              <h4>Croton Petra</h4>
+              <p>Rp75.000</p>
+            </a>
+          </div>
+
+          <!-- PRODUCT 3 -->
+          <div class="product-card" data-category="bunga" data-price="90000">
+            <a href="peony.html" class="product-link">
+              <img src="images/bunga1.jpeg" alt="" />
+              <h4>Peony Pink</h4>
+              <p>Rp90.000</p>
+            </a>
+          </div>
+
+          <!-- PRODUCT 4 -->
+          <div class="product-card" data-category="kaktus" data-price="65000">
+            <a href="minicactus.html" class="product-link">
+              <img src="images/kaktus2.jpeg" alt="" />
+              <h4>Mini Cactus</h4>
+              <p>Rp65.000</p>
+            </a>
+          </div>
+
+          <!-- PRODUCT 5 -->
+          <div class="product-card" data-category="hias" data-price="120000">
+            <a href="calathea.html" class="product-link">
+              <img src="images/hias2.jpeg" alt="" />
+              <h4>Calathea</h4>
+              <p>Rp120.000</p>
+            </a>
+          </div>
+
+          <!-- PRODUCT 6 -->
+          <div class="product-card" data-category="bunga" data-price="95000">
+            <a href="roseblossom.html" class="product-link">
+              <img src="images/bunga2.jpeg" alt="" />
+              <h4>Rose Blossom</h4>
+              <p>Rp95.000</p>
+            </a>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- LOAD MORE -->
+    <div class="load-more">
+      <button>Load More Products</button>
+    </div>
+
+    <script src="JS/script.js"></script>
+  </body>
+</html>

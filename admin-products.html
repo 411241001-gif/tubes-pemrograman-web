@@ -1,0 +1,369 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Admin Products | TanamanKu</title>
+
+    <style>
+      body {
+        font-family: Arial, sans-serif;
+        background: #f7f7f7;
+        padding: 30px;
+      }
+
+      .nav-buttons {
+        text-align: center;
+        margin-bottom: 30px;
+      }
+
+      .nav-buttons a {
+        display: inline-block;
+        padding: 10px 20px;
+        background: #4caf50;
+        color: white;
+        text-decoration: none;
+        border-radius: 10px;
+        margin: 0 5px;
+      }
+
+      .form-box {
+        background: white;
+        padding: 25px;
+        border-radius: 15px;
+        margin-bottom: 30px;
+        box-shadow: 0 2px 10px rgba(0, 0, 0, 0.08);
+      }
+
+      .form-box input,
+      .form-box textarea {
+        width: 100%;
+        padding: 12px;
+        margin-top: 10px;
+        margin-bottom: 15px;
+        border: 1px solid #ddd;
+        border-radius: 10px;
+        box-sizing: border-box;
+      }
+
+      .form-box button {
+        padding: 12px 20px;
+        border: none;
+        border-radius: 10px;
+        cursor: pointer;
+        background: #4caf50;
+        color: white;
+      }
+
+      .product-card {
+        background: white;
+        padding: 20px;
+        border-radius: 15px;
+        margin-bottom: 15px;
+        box-shadow: 0 2px 10px rgba(0, 0, 0, 0.08);
+        display: flex;
+        gap: 20px;
+        align-items: center;
+      }
+
+      .product-card img {
+        width: 100px;
+        height: 100px;
+        object-fit: cover;
+        border-radius: 12px;
+      }
+
+      .product-info {
+        flex: 1;
+      }
+
+      .product-actions button {
+        margin-right: 10px;
+        padding: 8px 15px;
+        border: none;
+        border-radius: 8px;
+        cursor: pointer;
+      }
+
+      .edit-btn {
+        background: #2196f3;
+        color: white;
+      }
+
+      .delete-btn {
+        background: #f44336;
+        color: white;
+      }
+    </style>
+  </head>
+
+  <script>
+    const user = JSON.parse(localStorage.getItem("user"));
+
+    if (!user || user.role !== "admin") {
+      alert("Akses ditolak!");
+
+      window.location.href = "index.html";
+    }
+  </script>
+
+  <body>
+    <h1 style="text-align: center">🌿 TanamanKu Product Management</h1>
+
+    <div class="nav-buttons">
+      <a href="admin.html">Orders</a>
+      <a href="admin-products.html">Products</a>
+    </div>
+
+    <div class="form-box">
+      <h2 id="formTitle">Tambah Produk</h2>
+
+      <input type="hidden" id="productId" />
+
+      <input type="text" id="name" placeholder="Nama Produk" />
+
+      <input type="text" id="category" placeholder="Kategori" />
+
+      <input type="number" id="price" placeholder="Harga" />
+
+      <input type="number" id="stock" placeholder="Stok" />
+
+      <input type="text" id="image" placeholder="images/namafile.jpeg" />
+
+      <textarea id="description" rows="4" placeholder="Deskripsi"></textarea>
+
+      <button onclick="saveProduct()" id="saveBtn">Tambah Produk</button>
+    </div>
+
+    <div id="productsContainer"></div>
+
+    <script>
+      async function loadProducts() {
+        try {
+          const response = await fetch("http://localhost:3000/products");
+
+          const data = await response.json();
+
+          const container = document.getElementById("productsContainer");
+
+          container.innerHTML = "";
+
+          data.products.forEach((product) => {
+            container.innerHTML += `
+          <div class="product-card">
+
+            <img src="${product.image}">
+
+            <div class="product-info">
+
+              <h3>${product.name}</h3>
+
+              <p>Kategori: ${product.category}</p>
+
+              <p>Harga: Rp${Number(product.price).toLocaleString("id-ID")}</p>
+
+              <p>Stok: ${product.stock}</p>
+
+              <p>${product.description}</p>
+
+            </div>
+
+            <div class="product-actions">
+
+              <button
+                class="edit-btn"
+                onclick="editProduct(
+                  ${product.id},
+                  '${product.name.replace(/'/g, "\\'")}',
+                  '${product.category.replace(/'/g, "\\'")}',
+                  ${product.price},
+                  ${product.stock},
+                  '${product.image.replace(/'/g, "\\'")}',
+                  \`${product.description.replace(/`/g, "\\`")}\`
+                )"
+              >
+                Edit
+              </button>
+
+              <button
+                class="delete-btn"
+                onclick="deleteProduct(${product.id})"
+              >
+                Delete
+              </button>
+
+            </div>
+
+          </div>
+        `;
+          });
+        } catch (error) {
+          console.log(error);
+
+          alert("Gagal mengambil produk");
+        }
+      }
+
+      async function saveProduct() {
+        const productId = document.getElementById("productId").value;
+
+        const productData = {
+          name: document.getElementById("name").value,
+          category: document.getElementById("category").value,
+          price: document.getElementById("price").value,
+          stock: document.getElementById("stock").value,
+          image: document.getElementById("image").value,
+          description: document.getElementById("description").value,
+        };
+
+        if (
+          !productData.name ||
+          !productData.category ||
+          !productData.price ||
+          !productData.stock ||
+          !productData.image ||
+          !productData.description
+        ) {
+          alert("Semua field wajib diisi");
+
+          return;
+        }
+
+        try {
+          let response;
+
+          if (productId) {
+            response = await fetch(
+              `http://localhost:3000/admin/products/${productId}`,
+              {
+                method: "PUT",
+
+                headers: {
+                  "Content-Type": "application/json",
+                },
+
+                body: JSON.stringify(productData),
+              },
+            );
+          } else {
+            response = await fetch("http://localhost:3000/admin/products", {
+              method: "POST",
+
+              headers: {
+                "Content-Type": "application/json",
+              },
+
+              body: JSON.stringify(productData),
+            });
+          }
+
+          const data = await response.json();
+
+          if (data.success) {
+            alert(
+              productId
+                ? "Produk berhasil diupdate"
+                : "Produk berhasil ditambahkan",
+            );
+
+            resetForm();
+
+            loadProducts();
+          } else {
+            alert(data.message || "Terjadi kesalahan");
+          }
+        } catch (error) {
+          console.log(error);
+
+          alert("Server error");
+        }
+      }
+
+      function editProduct(
+        id,
+        name,
+        category,
+        price,
+        stock,
+        image,
+        description,
+      ) {
+        document.getElementById("formTitle").innerText = "Edit Produk";
+
+        document.getElementById("saveBtn").innerText = "Update Produk";
+
+        document.getElementById("productId").value = id;
+
+        document.getElementById("name").value = name;
+
+        document.getElementById("category").value = category;
+
+        document.getElementById("price").value = price;
+
+        document.getElementById("stock").value = stock;
+
+        document.getElementById("image").value = image;
+
+        document.getElementById("description").value = description;
+
+        window.scrollTo({
+          top: 0,
+          behavior: "smooth",
+        });
+      }
+
+      async function deleteProduct(id) {
+        const confirmDelete = confirm("Yakin ingin menghapus produk ini?");
+
+        if (!confirmDelete) {
+          return;
+        }
+
+        try {
+          const response = await fetch(
+            `http://localhost:3000/admin/products/${id}`,
+            {
+              method: "DELETE",
+            },
+          );
+
+          const data = await response.json();
+
+          if (data.success) {
+            alert("Produk berhasil dihapus");
+
+            loadProducts();
+          } else {
+            alert("Gagal menghapus produk");
+          }
+        } catch (error) {
+          console.log(error);
+
+          alert("Server error");
+        }
+      }
+
+      function resetForm() {
+        document.getElementById("formTitle").innerText = "Tambah Produk";
+
+        document.getElementById("saveBtn").innerText = "Tambah Produk";
+
+        document.getElementById("productId").value = "";
+
+        document.getElementById("name").value = "";
+
+        document.getElementById("category").value = "";
+
+        document.getElementById("price").value = "";
+
+        document.getElementById("stock").value = "";
+
+        document.getElementById("image").value = "";
+
+        document.getElementById("description").value = "";
+      }
+
+      loadProducts();
+    </script>
+  </body>
+</html>

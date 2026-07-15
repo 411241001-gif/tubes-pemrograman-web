@@ -1,0 +1,182 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>TanamanKu</title>
+
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css"
+    />
+    <link rel="stylesheet" href="CSS/style.css" />
+  </head>
+
+  <body>
+    <!-- FLOATING LEAVES -->
+    <div class="leaves">
+      <span></span>
+      <span></span>
+      <span></span>
+      <span></span>
+      <span></span>
+      <span></span>
+      <span></span>
+    </div>
+
+    <!-- NAVBAR -->
+    <nav class="navbar">
+      <div class="logo">
+        <a href="index.html">TanamanKu</a>
+      </div>
+
+      <ul class="nav-links">
+        <li><a href="index.html">Home</a></li>
+        <li><a href="shop.html">Shop</a></li>
+        <li><a href="about.html">About</a></li>
+      </ul>
+
+      <form class="nav-right" id="searchForm">
+        <input
+          type="text"
+          id="searchInput"
+          placeholder="Cari tanaman atau kategori..."
+        />
+
+        <a href="cart.html" class="cart-icon">
+          <i class="fa-solid fa-cart-shopping"></i>
+          <span id="cart-count">0</span>
+        </a>
+        <a href="profile.html" class="login-btn"> Profile </a>
+        <a href="login.html" class="login-btn" id="loginBtn"> Login </a>
+        <a href="myorders.html" class="login-btn"> My Orders </a>
+        <a
+          href="admin.html"
+          class="login-btn"
+          id="adminBtn"
+          style="display: none"
+        >
+          Admin Panel
+        </a>
+      </form>
+    </nav>
+
+    <!-- HERO -->
+    <section class="hero">
+      <div class="hero-content">
+        <h1>TanamanKu</h1>
+
+        <p>Temukan berbagai tanaman hias terbaik untuk mempercantik rumahmu.</p>
+
+        <a href="shop.html" class="shop-btn">Shop All</a>
+      </div>
+
+      <div class="hero-image">
+        <img src="images/hero-tanaman.jpeg" alt="Tanaman" />
+      </div>
+    </section>
+
+    <!-- SECOND SECTION -->
+    <!-- WHY CHOOSE US -->
+    <section class="features-section">
+      <h2>Kenapa Memilih TanamanKu?</h2>
+
+      <div class="features-container">
+        <!-- CARD 1 -->
+        <div class="feature-card">
+          <div class="feature-icon">🚚</div>
+
+          <h3>Pengiriman Aman</h3>
+
+          <p>
+            Tanaman dikemas dengan aman agar tetap segar dan tidak rusak saat
+            pengiriman.
+          </p>
+        </div>
+
+        <!-- CARD 2 -->
+        <div class="feature-card">
+          <div class="feature-icon">🌱</div>
+
+          <h3>Tanaman Berkualitas</h3>
+
+          <p>
+            Semua tanaman dipilih langsung dengan kualitas terbaik dan perawatan
+            maksimal.
+          </p>
+        </div>
+
+        <!-- CARD 3 -->
+        <div class="feature-card">
+          <div class="feature-icon">💬</div>
+
+          <h3>Dukungan Pelanggan</h3>
+
+          <p>
+            Tim kami siap membantu konsultasi dan pertanyaan seputar tanaman
+            hias.
+          </p>
+        </div>
+      </div>
+    </section>
+
+    <footer class="footer">
+      <div class="newsletter" style="text-align: center; padding: 30px 0">
+        <h3 style="font-style: italic; color: #2c3e50">
+          "Bawa Kesegaran Alam ke Dalam Rumah Anda."
+        </h3>
+        <p>Merawat tanaman adalah merawat kehidupan dan ketenangan pikiran.</p>
+      </div>
+
+      <div
+        class="footer-links"
+        style="
+          display: flex;
+          justify-content: space-around;
+          flex-wrap: wrap;
+          gap: 20px;
+        "
+      >
+        <div>
+          <h4>Shop</h4>
+          <p>Tanaman Hias Daun</p>
+          <p>Tanaman Kaktus</p>
+          <p>Tanaman Bunga</p>
+        </div>
+
+        <div>
+          <h4>About</h4>
+          <p>About Us</p>
+          <p>Contact</p>
+        </div>
+
+        <div>
+          <h4>Hubungi Kami</h4>
+          <p style="margin-bottom: 8px">
+            <i
+              class="fa-solid fa-phone"
+              style="color: #27ae60; margin-right: 5px"
+            ></i>
+            +62 812-3456-7890
+          </p>
+          <p style="margin-bottom: 8px">
+            <i
+              class="fa-brands fa-whatsapp"
+              style="color: #27ae60; margin-right: 5px"
+            ></i>
+            +62 812-3456-7890
+          </p>
+          <p>
+            <i
+              class="fa-brands fa-instagram"
+              style="color: #27ae60; margin-right: 5px"
+            ></i>
+            @tanamanku.id
+          </p>
+        </div>
+      </div>
+    </footer>
+
+    <script src="JS/script.js"></script>
+  </body>
+</html>

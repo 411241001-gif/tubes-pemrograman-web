@@ -1,0 +1,174 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+    <title>Checkout | TanamanKu</title>
+
+    <!-- FONT AWESOME -->
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css"
+    />
+
+    <!-- CSS -->
+    <link rel="stylesheet" href="CSS/style.css" />
+  </head>
+  <script>
+    if (!localStorage.getItem("user")) {
+      alert("Silakan login terlebih dahulu");
+      window.location.href = "login.html";
+    }
+  </script>
+  <body>
+    <!-- ================= NAVBAR ================= -->
+
+    <nav class="navbar">
+      <div class="logo">
+        <a href="index.html">TanamanKu</a>
+      </div>
+
+      <ul class="nav-links">
+        <li><a href="index.html">Home</a></li>
+
+        <li><a href="shop.html">Shop</a></li>
+
+        <li><a href="about.html">About</a></li>
+      </ul>
+
+      <form class="nav-right" id="searchForm">
+        <input
+          type="text"
+          id="searchInput"
+          placeholder="Cari tanaman atau kategori..."
+        />
+
+        <button type="submit" hidden></button>
+
+        <a href="cart.html" class="cart-icon">
+          <i class="fa-solid fa-cart-shopping"></i>
+
+          <span id="cart-count">0</span>
+        </a>
+        <a href="profile.html" class="login-btn"> Profile </a>
+        <a href="login.html" class="login-btn" id="loginBtn"> Login </a>
+        <a href="myorders.html" class="login-btn"> My Orders </a>
+      </form>
+    </nav>
+
+    <!-- ================= CHECKOUT ================= -->
+
+    <section class="checkout-section">
+      <!-- LEFT -->
+
+      <div class="checkout-left">
+        <h1>Checkout</h1>
+
+        <!-- STEP -->
+
+        <div class="checkout-steps">
+          <span class="active-step"> Address </span>
+
+          <span>Shipping</span>
+
+          <span>Payment</span>
+        </div>
+
+        <!-- FORM -->
+
+        <form class="checkout-form">
+          <h3>Informasi Pengiriman</h3>
+
+          <!-- NAMA -->
+          <input type="text" placeholder="Nama Lengkap" />
+
+          <!-- NOMOR -->
+          <input type="text" placeholder="Nomor HP" />
+
+          <!-- PROVINSI -->
+          <select>
+            <option>Pilih Provinsi</option>
+
+            <option>DKI Jakarta</option>
+
+            <option>Jawa Barat</option>
+
+            <option>Banten</option>
+          </select>
+
+          <!-- KOTA -->
+          <input type="text" placeholder="Kota / Kabupaten" />
+
+          <!-- KECAMATAN -->
+          <input type="text" placeholder="Kecamatan" />
+
+          <!-- KODE POS -->
+          <input type="text" placeholder="Kode Pos" />
+
+          <!-- ALAMAT -->
+          <textarea placeholder="Detail alamat lengkap" rows="5"></textarea>
+
+          <!-- CHECKBOX -->
+
+          <label class="save-info">
+            <input type="checkbox" />
+
+            Simpan informasi ini
+          </label>
+
+          <!-- BUTTON -->
+
+          <a href="shipping.html" class="continue-btn">
+            Continue To Shipping
+          </a>
+          <a href="cart.html" class="back-btn">Back to Cart</a>
+        </form>
+      </div>
+
+      <!-- RIGHT -->
+
+      <div class="checkout-right">
+        <div class="summary-box">
+          <h2>Your Cart</h2>
+
+          <!-- AUTO CART -->
+          <div id="checkout-cart-items"></div>
+
+          <!-- TOTAL -->
+
+          <div class="summary-line">
+            <span>Subtotal</span>
+
+            <span id="checkout-subtotal"> Rp0 </span>
+          </div>
+
+          <div class="summary-line">
+            <span>Shipping</span>
+
+            <span> Rp10.000 </span>
+          </div>
+          <div
+            class="summary-line"
+            id="discount-row"
+            style="display: none; color: #e74c3c"
+          >
+            <span>Discount</span>
+            <span id="discount-amount">-Rp0</span>
+          </div>
+
+          <div class="summary-line total">
+            <span>Total</span>
+
+            <span id="checkout-total"> Rp0 </span>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- JS -->
+    <div id="toast"></div>
+    <script src="JS/script.js"></script>
+  </body>
+</html>

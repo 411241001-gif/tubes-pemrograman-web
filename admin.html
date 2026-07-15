@@ -1,0 +1,361 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+    <title>Admin Panel | TanamanKu</title>
+
+    <style>
+      body {
+        font-family: Arial, sans-serif;
+        background: #f7f7f7;
+        padding: 30px;
+      }
+
+      .stat-box {
+        background: white;
+        padding: 20px;
+        border-radius: 15px;
+        width: 180px;
+        text-align: center;
+        box-shadow: 0 2px 10px rgba(0, 0, 0, 0.08);
+      }
+
+      .order-card {
+        background: white;
+        padding: 20px;
+        border-radius: 15px;
+        margin-bottom: 15px;
+        box-shadow: 0 2px 10px rgba(0, 0, 0, 0.08);
+      }
+
+      .badge {
+        padding: 5px 12px;
+        border-radius: 20px;
+        color: white;
+      }
+
+      .pending {
+        background: orange;
+      }
+
+      .paid {
+        background: #2196f3;
+      }
+
+      .completed {
+        background: green;
+      }
+    </style>
+  </head>
+  <script>
+    const user = JSON.parse(localStorage.getItem("user"));
+
+    if (!user || user.role !== "admin") {
+      alert("Akses ditolak!");
+
+      window.location.href = "index.html";
+    }
+  </script>
+  <body>
+    <h1 style="text-align: center; margin-bottom: 30px">
+      🌿 TanamanKu Admin Panel
+    </h1>
+
+    <div
+      id="stats"
+      style="
+        display: flex;
+        gap: 15px;
+        justify-content: center;
+        flex-wrap: wrap;
+        margin-bottom: 30px;
+      "
+    >
+      <div class="stat-box">
+        Revenue
+        <h2 id="revenue">Rp0</h2>
+      </div>
+      <div class="stat-box">
+        Total Orders
+        <h2 id="totalOrders">0</h2>
+      </div>
+
+      <div class="stat-box">
+        Pending
+        <h2 id="pendingOrders">0</h2>
+      </div>
+
+      <div class="stat-box">
+        Paid
+        <h2 id="paidOrders">0</h2>
+      </div>
+
+      <div class="stat-box">
+        Completed
+        <h2 id="completedOrders">0</h2>
+      </div>
+    </div>
+
+    <div id="adminOrders"></div>
+
+    <script>
+      async function loadOrders() {
+        try {
+          const response = await fetch("http://localhost:3000/admin/orders");
+
+          const data = await response.json();
+
+          const container = document.getElementById("adminOrders");
+
+          container.innerHTML = "";
+
+          let pending = 0;
+          let paid = 0;
+          let completed = 0;
+          let revenue = 0;
+
+          data.orders.forEach((order) => {
+            if (order.status === "Pending") {
+              pending++;
+            }
+
+            if (order.status === "Paid") {
+              paid++;
+            }
+
+            if (order.status === "Completed") {
+              completed++;
+
+              revenue += Number(order.total);
+            }
+          });
+
+          document.getElementById("totalOrders").innerText = data.orders.length;
+
+          document.getElementById("pendingOrders").innerText = pending;
+
+          document.getElementById("paidOrders").innerText = paid;
+
+          document.getElementById("completedOrders").innerText = completed;
+
+          document.getElementById("revenue").innerText =
+            "Rp" + revenue.toLocaleString("id-ID");
+
+          container.innerHTML = "";
+
+          for (const order of data.orders) {
+            let badgeClass = "";
+
+            if (order.status === "Pending") {
+              badgeClass = "pending";
+            }
+
+            if (order.status === "Paid") {
+              badgeClass = "paid";
+            }
+
+            if (order.status === "Completed") {
+              badgeClass = "completed";
+            }
+
+            const itemResponse = await fetch(
+              `http://localhost:3000/order-items/${order.id}`,
+            );
+
+            const itemData = await itemResponse.json();
+
+            let itemsHTML = "";
+
+            itemData.items.forEach((item) => {
+              itemsHTML += `
+          <div style="
+            display:flex;
+            gap:15px;
+            align-items:center;
+            margin-top:10px;
+            padding:12px;
+            background:#f5f5f5;
+            border-radius:12px;
+          ">
+
+            <img
+              src="${item.image}"
+              style="
+                width:70px;
+                height:70px;
+                object-fit:cover;
+                border-radius:10px;
+              "
+            >
+
+            <div>
+
+              <strong>
+                ${item.product_name}
+              </strong>
+
+              <p>
+                Qty: ${item.quantity}
+              </p>
+
+              <p>
+                Size: ${item.size || "-"}
+              </p>
+
+              <p>
+                Rp${Number(item.price).toLocaleString("id-ID")}
+              </p>
+
+            </div>
+
+          </div>
+        `;
+            });
+
+            container.innerHTML += `
+
+        <div class="order-card">
+
+          <h3>
+            👤 ${order.username}
+          </h3>
+
+          <p>
+            Order #${order.id}
+          </p>
+
+          <p>
+            Rp${Number(order.total).toLocaleString("id-ID")}
+          </p>
+
+          <p>
+            <span class="badge ${badgeClass}">
+              ${order.status}
+            </span>
+          </p>
+
+          <hr style="margin:15px 0;">
+
+          <h4>
+            Products
+          </h4>
+
+          ${itemsHTML}
+
+          <br>
+
+          <select
+          onchange="updateStatus(${order.id}, this.value)">
+
+            <option
+            value="Pending"
+            ${order.status === "Pending" ? "selected" : ""}>
+              Pending
+            </option>
+
+            <option
+            value="Paid"
+            ${order.status === "Paid" ? "selected" : ""}>
+              Paid
+            </option>
+
+            <option
+            value="Completed"
+            ${order.status === "Completed" ? "selected" : ""}>
+              Completed
+            </option>
+
+          </select>
+
+          <button
+          onclick="deleteOrder(${order.id})"
+          style="
+            margin-left:10px;
+            cursor:pointer;
+          ">
+            Delete
+          </button>
+
+        </div>
+
+      `;
+          }
+        } catch (error) {
+          console.log(error);
+
+          alert("Gagal mengambil data");
+        }
+      }
+      async function updateStatus(id, status) {
+        try {
+          const response = await fetch(
+            `http://localhost:3000/admin/update-status/${id}`,
+
+            {
+              method: "PUT",
+
+              headers: {
+                "Content-Type": "application/json",
+              },
+
+              body: JSON.stringify({
+                status,
+              }),
+            },
+          );
+
+          const data = await response.json();
+
+          if (data.success) {
+            alert("Status berhasil diupdate");
+
+            loadOrders();
+          } else {
+            alert("Update gagal");
+          }
+        } catch (error) {
+          console.log(error);
+
+          alert("Server error");
+        }
+      }
+
+      async function deleteOrder(id) {
+        const confirmDelete = confirm("Yakin ingin menghapus order ini?");
+
+        if (!confirmDelete) {
+          return;
+        }
+
+        try {
+          const response = await fetch(
+            `http://localhost:3000/admin/delete-order/${id}`,
+
+            {
+              method: "DELETE",
+            },
+          );
+
+          const data = await response.json();
+
+          if (data.success) {
+            alert("Order berhasil dihapus");
+
+            loadOrders();
+          } else {
+            alert("Gagal menghapus order");
+          }
+        } catch (error) {
+          console.log(error);
+
+          alert("Server error");
+        }
+      }
+
+      loadOrders();
+    </script>
+  </body>
+</html>

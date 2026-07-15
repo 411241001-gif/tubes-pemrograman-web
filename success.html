@@ -1,0 +1,83 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+    <title>Order Success | TanamanKu</title>
+
+    <link rel="stylesheet" href="CSS/style.css" />
+
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css"
+    />
+  </head>
+  <script>
+    if (!localStorage.getItem("user")) {
+      alert("Silakan login terlebih dahulu");
+      window.location.href = "login.html";
+    }
+  </script>
+  <body>
+    <!-- NAVBAR -->
+    <nav class="navbar">
+      <div class="logo">
+        <a href="index.html">TanamanKu</a>
+      </div>
+
+      <ul class="nav-links">
+        <li><a href="index.html">Home</a></li>
+        <li><a href="shop.html">Shop</a></li>
+        <li><a href="about.html">About</a></li>
+      </ul>
+
+      <div class="nav-right">
+        <a href="cart.html" class="cart-icon">
+          <i class="fa-solid fa-cart-shopping"></i>
+          <span id="cart-count">0</span>
+        </a>
+        <a href="profile.html" class="login-btn"> Profile </a>
+        <a href="login.html" class="login-btn" id="loginBtn"> Login </a>
+      </div>
+    </nav>
+
+    <!-- SUCCESS -->
+    <section class="success-section">
+      <div class="success-box">
+        <div class="success-icon">
+          <i class="fa-solid fa-circle-check"></i>
+        </div>
+
+        <h1>Payment Successful!</h1>
+
+        <p>Terima kasih sudah berbelanja di TanamanKu 🌿</p>
+
+        <div class="success-info">
+          <div class="success-line">
+            <span>Order ID</span>
+            <strong id="order-id"></strong>
+          </div>
+
+          <div class="success-line">
+            <span>Estimated Delivery</span>
+            <strong>2 - 4 Hari</strong>
+          </div>
+
+          <div class="success-line">
+            <span>Status</span>
+            <strong class="paid-status"> Paid </strong>
+          </div>
+        </div>
+
+        <div class="success-buttons">
+          <a href="shop.html" class="continue-shopping"> Continue Shopping </a>
+
+          <a href="index.html" class="back-home"> Back To Home </a>
+        </div>
+      </div>
+    </section>
+
+    <script src="JS/script.js"></script>
+  </body>
+</html>

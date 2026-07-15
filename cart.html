@@ -1,0 +1,130 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+    <title>Cart | TanamanKu</title>
+
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css"
+    />
+
+    <link rel="stylesheet" href="CSS/style.css" />
+  </head>
+
+  <body>
+    <nav class="navbar">
+      <div class="logo">
+        <a href="index.html">TanamanKu</a>
+      </div>
+
+      <ul class="nav-links">
+        <li><a href="index.html">Home</a></li>
+        <li><a href="shop.html">Shop</a></li>
+        <li><a href="about.html">About</a></li>
+      </ul>
+
+      <form class="nav-right" id="searchForm">
+        <input
+          type="text"
+          id="searchInput"
+          placeholder="Cari tanaman atau kategori..."
+        />
+
+        <button type="submit" hidden></button>
+
+        <a href="cart.html" class="cart-icon">
+          <i class="fa-solid fa-cart-shopping"></i>
+          <span id="cart-count">0</span>
+        </a>
+        <a href="profile.html" class="login-btn"> Profile </a>
+        <a href="login.html" class="login-btn" id="loginBtn"> Login </a>
+        <a href="myorders.html" class="login-btn"> My Orders </a>
+      </form>
+    </nav>
+
+    <section class="cart-section">
+      <div class="cart-left">
+        <h1>Your Cart</h1>
+        <p class="cart-subtitle">Tanaman pilihanmu siap untuk checkout 🌿</p>
+
+        <div id="cart-items"></div>
+
+        <div class="order-info">
+  <h3>Order Information</h3>
+  
+  <div class="info-box" style="flex-direction: column; align-items: flex-start; gap: 8px;">
+    <span style="font-weight: bold; color: #7a8f63;">📦 Return & Refund Policy</span>
+    <p style="margin-bottom: 0; font-size: 14px; color: #777; line-height: 1.6;">
+      Kami memberikan garansi aman sampai tujuan. Jika tanaman diterima dalam kondisi mati atau rusak parah, klaim pengembalian dana atau retur berlaku 1x24 jam setelah paket diterima wajib menyertakan video unboxing.
+    </p>
+  </div>
+
+  <div class="info-box" style="flex-direction: column; align-items: flex-start; gap: 8px; border-top: 1px solid #ccc; padding-top: 18px;">
+    <span style="font-weight: bold; color: #7a8f63;">🚚 Shipping & Delivery</span>
+    <p style="margin-bottom: 0; font-size: 14px; color: #777; line-height: 1.6;">
+      Pengiriman tanaman menggunakan packing khusus pelindung akar dan pelembab tambahan. Sangat disarankan menggunakan layanan Next Day atau Sameday untuk area terdekat agar tanaman tidak stres.
+    </p>
+  </div>
+
+  <div class="info-box" style="flex-direction: column; align-items: flex-start; gap: 8px; border-top: 1px solid #ccc; padding-top: 18px; border-bottom: 1px solid #ccc; padding-bottom: 18px;">
+    <span style="font-weight: bold; color: #7a8f63;">🛡️ Secure Packaging Guarantee</span>
+    <p style="margin-bottom: 0; font-size: 14px; color: #777; line-height: 1.6;">
+      Setiap tanaman dibungkus dengan kardus tebal khusus, penyangga bambu anti-patah, serta media tanam yang dikunci rapat agar aman selama perjalanan.
+    </p>
+  </div>
+</div>
+        </div>
+      </div>
+
+      <div class="cart-right">
+        <div class="summary-box">
+          <h2>Order Summary</h2>
+
+          <input
+            type="text"
+            id="coupon-input"
+            placeholder="Enter coupon code here"
+          />
+          <p
+            id="coupon-message"
+            style="font-size: 12px; margin-top: 5px; display: none"
+          ></p>
+
+          <div class="summary-line">
+            <span>Subtotal</span>
+            <span id="subtotal">Rp0</span>
+          </div>
+
+          <div
+            class="summary-line"
+            id="discount-row"
+            style="display: none; color: #e74c3c"
+          >
+            <span>Discount</span>
+            <span id="discount-amount">-Rp0</span>
+          </div>
+
+          <div class="summary-line">
+            <span>Shipping</span>
+            <span id="shipping">Rp10.000</span>
+          </div>
+
+          <div class="summary-line total">
+            <span>Total</span>
+            <span id="total">Rp0</span>
+          </div>
+
+          <a href="checkout.html" class="checkout-btn">
+            Continue To Checkout
+          </a>
+        </div>
+      </div>
+    </section>
+
+    <div id="toast"></div>
+    <script src="JS/script.js"></script>
+  </body>
+</html>

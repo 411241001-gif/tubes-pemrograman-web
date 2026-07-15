@@ -1,0 +1,118 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+    <title>Peony Pink | TanamanKu</title>
+
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css"
+    />
+
+    <link rel="stylesheet" href="CSS/style.css" />
+  </head>
+
+  <body>
+    <!-- ================= NAVBAR ================= -->
+
+    <nav class="navbar">
+      <div class="logo">
+        <a href="index.html">TanamanKu</a>
+      </div>
+
+      <ul class="nav-links">
+        <li><a href="index.html">Home</a></li>
+        <li><a href="shop.html">Shop</a></li>
+        <li><a href="about.html">About</a></li>
+      </ul>
+
+      <form class="nav-right" id="searchForm">
+        <input
+          type="text"
+          id="searchInput"
+          placeholder="Cari tanaman atau kategori..."
+        />
+
+        <a href="cart.html" class="cart-icon">
+          <i class="fa-solid fa-cart-shopping"></i>
+          <span id="cart-count">0</span>
+        </a>
+        <a href="profile.html" class="login-btn"> Profile </a>
+        <a href="login.html" class="login-btn" id="loginBtn"> Login </a>
+        <a href="myorders.html" class="login-btn"> My Orders </a>
+      </form>
+    </nav>
+
+    <!-- ================= PRODUCT DETAIL ================= -->
+
+    <section class="product-detail">
+      <!-- LEFT -->
+      <div class="product-gallery-grid">
+        <img src="images/bunga1.jpeg" />
+        <img src="images/bunga3.jpeg" />
+        <img src="images/bunga4.jpeg" />
+        <img src="images/bunga5.jpeg" />
+      </div>
+
+      <!-- RIGHT -->
+      <div class="product-info">
+        <h1>Peony Pink</h1>
+
+        <p class="price" id="product-price" data-base-price="90000">Rp90.000</p>
+
+        <p class="description">
+          Peony Pink merupakan tanaman bunga hias dengan warna pink lembut yang
+          elegan dan cocok digunakan untuk mempercantik ruangan maupun taman
+          rumah.
+        </p>
+
+        <!-- SIZE -->
+        <div class="size-section">
+          <h3>Size</h3>
+
+          <div class="sizes">
+            <button class="size-btn">S</button>
+
+            <button class="size-btn active">M</button>
+
+            <button class="size-btn">L</button>
+          </div>
+        </div>
+
+        <!-- QUANTITY -->
+        <div class="quantity-section">
+          <h3>Quantity</h3>
+
+          <div class="quantity-box">
+            <button id="minus">-</button>
+
+            <span id="quantity">1</span>
+
+            <button id="plus">+</button>
+          </div>
+        </div>
+
+        <!-- BUTTON -->
+        <button
+          class="add-cart-btn"
+          data-name="Peony Pink"
+          data-price="90000"
+          data-image="images/bunga1.jpeg"
+        >
+          Add To Cart
+        </button>
+
+        <!-- EXTRA -->
+        <div class="product-extra">
+          <span>🌱 Fresh Plant</span>
+          <span>🚚 Fast Delivery</span>
+          <span>💚 Healthy Plant</span>
+        </div>
+      </div>
+    </section>
+    <div id="toast"></div>
+    <script src="JS/script.js"></script>
+  </body>
+</html>

@@ -1,0 +1,251 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+    <title>My Orders | TanamanKu</title>
+
+    <link rel="stylesheet" href="CSS/style.css" />
+
+    <style>
+      body {
+        background: #f5f7f2;
+        font-family: Arial, sans-serif;
+        padding: 40px 20px;
+      }
+
+      .orders-wrapper {
+        max-width: 900px;
+        margin: auto;
+      }
+
+      .page-title {
+        text-align: center;
+        margin-bottom: 30px;
+        color: #4f6b3c;
+      }
+
+      .order-card {
+        background: white;
+        padding: 20px;
+        border-radius: 15px;
+        margin-bottom: 15px;
+        box-shadow: 0 2px 10px rgba(0, 0, 0, 0.08);
+        transition: 0.3s;
+      }
+
+      .order-card:hover {
+        transform: translateY(-2px);
+      }
+
+      .order-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 10px;
+      }
+
+      .order-total {
+        font-size: 18px;
+        font-weight: bold;
+        color: #4f6b3c;
+      }
+
+      .badge {
+        padding: 6px 14px;
+        border-radius: 20px;
+        color: white;
+        font-size: 13px;
+        font-weight: bold;
+      }
+
+      .pending {
+        background: #ff9800;
+      }
+
+      .paid {
+        background: #2196f3;
+      }
+
+      .completed {
+        background: #4caf50;
+      }
+
+      .order-date {
+        color: #777;
+        margin-top: 10px;
+        display: block;
+      }
+
+      .empty-order {
+        text-align: center;
+        background: white;
+        padding: 30px;
+        border-radius: 15px;
+        box-shadow: 0 2px 10px rgba(0, 0, 0, 0.08);
+      }
+    </style>
+  </head>
+
+  <body>
+    <div class="orders-wrapper">
+      <h1 class="page-title">🌿 My Orders</h1>
+
+      <div id="ordersContainer"></div>
+    </div>
+
+    <script>
+      const user = JSON.parse(localStorage.getItem("user"));
+
+      if (!user) {
+        alert("Silakan login");
+
+        window.location.href = "login.html";
+      }
+
+      async function loadOrders() {
+        try {
+          const response = await fetch(
+            `http://localhost:3000/orders/${user.id}`,
+          );
+
+          const data = await response.json();
+
+          const container = document.getElementById("ordersContainer");
+
+          container.innerHTML = "";
+
+          if (data.orders.length === 0) {
+            container.innerHTML = `
+
+          <div class="empty-order">
+
+            <h3>
+              Belum ada pesanan
+            </h3>
+
+            <p>
+              Yuk belanja tanaman favoritmu 🌿
+            </p>
+
+          </div>
+
+        `;
+
+            return;
+          }
+
+          for (const order of data.orders) {
+            let badgeClass = "";
+
+            if (order.status === "Pending") {
+              badgeClass = "pending";
+            }
+
+            if (order.status === "Paid") {
+              badgeClass = "paid";
+            }
+
+            if (order.status === "Completed") {
+              badgeClass = "completed";
+            }
+
+            const itemResponse = await fetch(
+              `http://localhost:3000/order-items/${order.id}`,
+            );
+
+            const itemData = await itemResponse.json();
+
+            let itemsHTML = "";
+
+            itemData.items.forEach((item) => {
+              itemsHTML += `
+
+            <div style="
+              display:flex;
+              gap:15px;
+              align-items:center;
+              margin-top:15px;
+              padding:12px;
+              background:#f9f9f9;
+              border-radius:12px;
+            ">
+
+              <img
+                src="${item.image}"
+                style="
+                  width:70px;
+                  height:70px;
+                  object-fit:cover;
+                  border-radius:10px;
+                "
+              >
+
+              <div>
+
+                <strong>
+                  ${item.product_name}
+                </strong>
+
+                <p>
+                  Qty: ${item.quantity}
+                </p>
+
+                <p>
+                  Size: ${item.size}
+                </p>
+
+              </div>
+
+            </div>
+
+          `;
+            });
+
+            container.innerHTML += `
+
+          <div class="order-card">
+
+            <div class="order-header">
+
+              <h3>
+                Order #${order.id}
+              </h3>
+
+              <span class="badge ${badgeClass}">
+                ${order.status}
+              </span>
+
+            </div>
+
+            <div class="order-total">
+
+              Rp${Number(order.total).toLocaleString("id-ID")}
+
+            </div>
+
+            ${itemsHTML}
+
+            <small class="order-date">
+
+              ${new Date(order.created_at).toLocaleDateString("id-ID")}
+
+            </small>
+
+          </div>
+
+        `;
+          }
+        } catch (error) {
+          console.log(error);
+
+          alert("Gagal mengambil data");
+        }
+      }
+
+      loadOrders();
+    </script>
+  </body>
+</html>
