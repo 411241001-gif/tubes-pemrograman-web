@@ -132,14 +132,14 @@ if (sortSelect) {
 const loadBtn = document.querySelector(".load-more button");
 let visibleProducts = 3;
 
-// Cek apakah user datang dari hasil search
+
 if (searchKeyword) {
-  // Kalau lagi nyari sesuatu, tampilkan semua hasil tanpa batas, sembunyikan tombol Load More
+ 
   if (loadBtn) {
     loadBtn.style.display = "none";
   }
 } else {
-  // Logika normal bawaan lo (Hanya berjalan kalau user TIDAK LAGI SEARCH)
+  
   if (products.length > 0) {
     products.forEach((product, index) => {
       if (index >= visibleProducts) {
@@ -376,7 +376,7 @@ if (cartItemsContainer) {
     const discountRow = document.getElementById("discount-row");
     const discountAmount = document.getElementById("discount-amount");
 
-    // Ambil diskon dari memori
+   
     let savedDiscount =
       parseFloat(localStorage.getItem("appliedDiscount")) || 0;
 
@@ -511,7 +511,7 @@ if (checkoutItems) {
     checkoutSubtotal.innerText = "Rp" + subtotal.toLocaleString("id-ID");
   }
 
-  // LOGIKA DISKON UNTUK CHECKOUT PAGE
+  
   let savedDiscount = parseFloat(localStorage.getItem("appliedDiscount")) || 0;
   const checkoutDiscountRow = document.getElementById("discount-row");
   const checkoutDiscountAmount = document.getElementById("discount-amount");
@@ -525,7 +525,7 @@ if (checkoutItems) {
   }
 
   if (checkoutTotal) {
-    let finalCheckoutTotal = subtotal - savedDiscount + 10000; // 10000 adalah default ongkir
+    let finalCheckoutTotal = subtotal - savedDiscount + 10000; 
     checkoutTotal.innerText =
       "Rp" +
       (finalCheckoutTotal < 0 ? 0 : finalCheckoutTotal).toLocaleString("id-ID");
@@ -562,10 +562,10 @@ if (shippingCartItems) {
   });
 
   let currentShipping = 10000;
-  localStorage.setItem("shippingCost", currentShipping); // <--- TAMBAHIN INI
+  localStorage.setItem("shippingCost", currentShipping); 
   let savedDiscount = parseFloat(localStorage.getItem("appliedDiscount")) || 0;
 
-  // LOGIKA DISKON UNTUK SHIPPING PAGE
+
   const shippingDiscountRow = document.getElementById("discount-row");
   const shippingDiscountAmount = document.getElementById("discount-amount");
 
@@ -598,7 +598,7 @@ if (shippingCartItems) {
 
       card.classList.add("active-shipping");
       currentShipping = parseInt(card.dataset.price);
-      localStorage.setItem("shippingCost", currentShipping); // <--- TAMBAHIN INI
+      localStorage.setItem("shippingCost", currentShipping); 
 
       if (shippingPrice) {
         shippingPrice.innerText =
@@ -651,14 +651,14 @@ if (paymentCartItems) {
   const paymentDiscountRow = document.getElementById("discount-row");
   const paymentDiscountAmount = document.getElementById("discount-amount");
 
-  // 1. Tarik data ongkir dari halaman Shipping (default 10000 kalau kosong)
+  
   let savedShipping = parseInt(localStorage.getItem("shippingCost")) || 10000;
 
   if (paymentSubtotal) {
     paymentSubtotal.innerText = "Rp" + subtotal.toLocaleString("id-ID");
   }
 
-  // 2. Update otomatis teks "Rp10.000" di baris Shipping jadi harga kurir yang bener
+  
   const summaryLines = document.querySelectorAll(
     ".payment-right .summary-line",
   );
@@ -676,7 +676,7 @@ if (paymentCartItems) {
   }
 
   if (paymentTotal) {
-    // 3. Hitung Grand Total pake savedShipping, BUKAN 10000 lagi
+   
     let finalPaymentTotal = subtotal - savedDiscount + savedShipping;
     paymentTotal.innerText =
       "Rp" +
@@ -732,7 +732,7 @@ if (orderId) {
   const randomId = "TRX" + Math.floor(Math.random() * 99999999);
   orderId.innerText = randomId;
 
-  /* CLEAR CART DAN CLEAR KUPON BIAR MULAI BARU */
+
   localStorage.removeItem("cart");
   localStorage.removeItem("appliedDiscount");
   updateCartCount();
